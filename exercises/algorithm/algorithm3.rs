@@ -3,11 +3,37 @@
 	This problem requires you to implement a sorting algorithm
 	you can use bubble sorting, insertion sorting, heap sorting, etc.
 */
-// I AM NOT DONE
 
-fn sort<T>(array: &mut [T]){
-	//TODO
+fn down<T: PartialOrd + Clone>(arr: &mut [T], start: usize, end: usize) {
+    let mut parent = start;
+    let mut child = parent*2 + 1;
+    while child <= end {
+        if child + 1 <= end && arr[child] <= arr[child+1] {
+            child += 1;
+        }
+        if arr[parent] >= arr[child] {
+            return;
+        } else {
+            arr.swap(parent, child);
+            parent = child;
+            child = parent*2 + 1;
+        }
+    }
 }
+
+fn sort<T: PartialOrd + Clone>(array: &mut [T]) {
+	//TODO
+    let end_index = array.len() - 1;
+    for i in (0..array.len() / 2).rev() {
+        down(array, i, end_index);
+    }
+
+    for i in (1..end_index + 1).rev() {
+        array.swap(0, i);
+        down(array, 0, i - 1);
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
